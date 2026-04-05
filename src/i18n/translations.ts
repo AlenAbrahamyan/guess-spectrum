@@ -1,0 +1,409 @@
+export type Lang = 'en' | 'es' | 'pt' | 'de' | 'fr' | 'it' | 'ja' | 'ko'
+
+export const LANG_META: Record<Lang, { flag: string; nativeName: string }> = {
+  en: { flag: '🇺🇸', nativeName: 'English' },
+  es: { flag: '🇪🇸', nativeName: 'Español' },
+  pt: { flag: '🇧🇷', nativeName: 'Português' },
+  de: { flag: '🇩🇪', nativeName: 'Deutsch' },
+  fr: { flag: '🇫🇷', nativeName: 'Français' },
+  it: { flag: '🇮🇹', nativeName: 'Italiano' },
+  ja: { flag: '🇯🇵', nativeName: '日本語' },
+  ko: { flag: '🇰🇷', nativeName: '한국어' },
+}
+
+export const LANGS = Object.keys(LANG_META) as Lang[]
+
+export type Step = { icon: string; title: string; desc: string }
+export type ScoreRow = { range: string; pts: number; label: string; color: string }
+
+export type T = {
+  // Main menu
+  tagline: string; play: string; howToPlay: string; footerMeta: string
+  // Lobby
+  gameSetup: string; players: string; playerNames: string
+  playerPlaceholder: (n: number) => string
+  topicsCount: (sel: number, total: number) => string
+  all: string; addTopic: string; startGame: string
+  addTopicModalTitle: string; leftPlaceholder: string; rightPlaceholder: string
+  cancel: string; add: string
+  // Info
+  howToPlayTitle: string; gotItBack: string
+  scoringTitle: string; scoringSubtitle: string; tipsTitle: string
+  steps: Step[]; tips: string[]; scoreRows: ScoreRow[]
+  // Role selection
+  psychicBadge: string; passPhoneTo: string
+  onlyLooks: (name: string) => string
+  imReadyShowTarget: string
+  // Clue phase
+  clueGiverLabel: string; theSpectrum: string
+  lookAtNeedle: string; clueGivenPassPhone: string
+  // Guess passing
+  guesserOf: (turn: number, total: number) => string
+  passTo: string; everyoneLookAway: string; spectrumLabel: string; imReadyShowDial: string
+  // Guess phase
+  guessingNow: string; dragNeedle: string; lockInGuess: string
+  // Reveal
+  revealBadge: string; clueBy: string
+  guessesTitle: string; scoresTitle: string; bestBadge: string
+  guessShort: string; targetShort: string; offByShort: string
+  playAgain: string; clueGiverNote: string
+}
+
+function sr(
+  r1: string, r2: string, r3: string, r4: string, r5: string,
+  l1: string, l2: string, l3: string, l4: string, l5: string,
+): ScoreRow[] {
+  return [
+    { range: r1, pts: 4, label: l1, color: '#00e676' },
+    { range: r2, pts: 3, label: l2, color: '#ffdd33' },
+    { range: r3, pts: 2, label: l3, color: '#ff9000' },
+    { range: r4, pts: 1, label: l4, color: '#ff4422' },
+    { range: r5, pts: 0, label: l5, color: '#555577' },
+  ]
+}
+
+export const TRANSLATIONS: Record<Lang, T> = {
+  en: {
+    tagline: 'Can you read minds?',
+    play: 'Play', howToPlay: 'How to Play',
+    footerMeta: '2–8 players · Pass & Play · No accounts needed',
+    gameSetup: 'Game Setup', players: 'Players', playerNames: 'Player Names',
+    playerPlaceholder: n => `Player ${n}`,
+    topicsCount: (sel, total) => `Topics (${sel}/${total})`,
+    all: 'All', addTopic: '+ Add', startGame: 'Start Game',
+    addTopicModalTitle: 'Add Topic',
+    leftPlaceholder: 'Left side (e.g. Hot)', rightPlaceholder: 'Right side (e.g. Cold)',
+    cancel: 'Cancel', add: 'Add',
+    howToPlayTitle: 'How to Play', gotItBack: 'Got It — Back to Menu',
+    scoringTitle: 'Scoring', scoringSubtitle: 'Distance between your guess and the target:',
+    tipsTitle: 'Tips',
+    steps: [
+      { icon: '🎯', title: 'Secret Target', desc: 'One player is the Clue Giver. They see a hidden target position on a spectrum dial.' },
+      { icon: '💡', title: 'Give a Clue', desc: 'The Clue Giver says ONE word or phrase that hints where the target sits on the spectrum.' },
+      { icon: '📱', title: 'Pass the Phone', desc: 'Everyone else guesses. Drag the needle on the dial to where you think the target is.' },
+      { icon: '✨', title: 'Reveal & Score', desc: 'The target is revealed. Score points based on how close your guess was.' },
+    ],
+    tips: [
+      'The Clue Giver cannot say the category words.',
+      'One clue only — no follow-up hints.',
+      'The same phone is passed between players.',
+      'Clue Giver rotates each round.',
+    ],
+    scoreRows: sr('0 – 5','6 – 10','11 – 20','21 – 30','> 30','Bullseye!','Close','Near','Far','Miss'),
+    psychicBadge: 'PSYCHIC THIS ROUND', passPhoneTo: 'Pass the phone to',
+    onlyLooks: name => `Only ${name} should look at the screen. You'll see the secret target and give ONE clue.`,
+    imReadyShowTarget: "I'm Ready — Show My Target",
+    clueGiverLabel: 'CLUE GIVER', theSpectrum: 'THE SPECTRUM',
+    lookAtNeedle: 'Look at the needle position on the dial above, then give a verbal clue to the other players.',
+    clueGivenPassPhone: 'Clue Given — Pass Phone',
+    guesserOf: (t, total) => `Guesser ${t} of ${total}`,
+    passTo: 'Pass to', everyoneLookAway: 'Everyone else look away 👀',
+    spectrumLabel: 'SPECTRUM', imReadyShowDial: "I'm Ready — Show the Dial",
+    guessingNow: 'GUESSING NOW', dragNeedle: 'Drag the needle to your guess', lockInGuess: 'Lock In Guess',
+    revealBadge: 'REVEAL', clueBy: 'Clue by',
+    guessesTitle: 'Guesses', scoresTitle: 'Scores', bestBadge: '★ BEST',
+    guessShort: 'Guess', targetShort: 'Target', offByShort: 'Off by',
+    playAgain: 'Play Again', clueGiverNote: 'Clue Giver',
+  },
+
+  es: {
+    tagline: '¿Puedes leer mentes?',
+    play: 'Jugar', howToPlay: 'Cómo jugar',
+    footerMeta: '2–8 jugadores · Pasando el móvil · Sin cuentas',
+    gameSetup: 'Configuración', players: 'Jugadores', playerNames: 'Nombres',
+    playerPlaceholder: n => `Jugador ${n}`,
+    topicsCount: (sel, total) => `Temas (${sel}/${total})`,
+    all: 'Todos', addTopic: '+ Añadir', startGame: 'Empezar',
+    addTopicModalTitle: 'Añadir Tema',
+    leftPlaceholder: 'Lado izquierdo (ej. Caliente)', rightPlaceholder: 'Lado derecho (ej. Frío)',
+    cancel: 'Cancelar', add: 'Añadir',
+    howToPlayTitle: 'Cómo jugar', gotItBack: 'Entendido — Volver al menú',
+    scoringTitle: 'Puntuación', scoringSubtitle: 'Distancia entre tu respuesta y el objetivo:',
+    tipsTitle: 'Consejos',
+    steps: [
+      { icon: '🎯', title: 'Objetivo secreto', desc: 'Un jugador es el Dador de pistas. Ve una posición oculta en el dial de espectro.' },
+      { icon: '💡', title: 'Da una pista', desc: 'El Dador de pistas dice UNA palabra o frase que indica dónde está el objetivo.' },
+      { icon: '📱', title: 'Pasa el móvil', desc: 'Los demás adivinan. Arrastra la aguja al lugar donde crees que está el objetivo.' },
+      { icon: '✨', title: 'Revelar y puntuar', desc: 'Se revela el objetivo. Ganas puntos según lo cerca que estuviste.' },
+    ],
+    tips: [
+      'El Dador de pistas no puede decir las palabras de la categoría.',
+      'Solo una pista, sin explicaciones adicionales.',
+      'El mismo móvil se pasa entre jugadores.',
+      'El Dador de pistas rota cada ronda.',
+    ],
+    scoreRows: sr('0 – 5','6 – 10','11 – 20','21 – 30','> 30','¡Bullseye!','Cerca','Próximo','Lejos','Fallo'),
+    psychicBadge: 'PSÍQUICO ESTA RONDA', passPhoneTo: 'Pasa el móvil a',
+    onlyLooks: name => `Solo ${name} mira la pantalla. Verás la posición secreta y darás UNA pista.`,
+    imReadyShowTarget: 'Listo — Mostrar mi objetivo',
+    clueGiverLabel: 'DADOR DE PISTAS', theSpectrum: 'EL ESPECTRO',
+    lookAtNeedle: 'Mira la posición de la aguja en el dial y da una pista verbal a los otros jugadores.',
+    clueGivenPassPhone: 'Pista dada — Pasa el móvil',
+    guesserOf: (t, total) => `Adivinador ${t} de ${total}`,
+    passTo: 'Pasa a', everyoneLookAway: 'Los demás miren para otro lado 👀',
+    spectrumLabel: 'ESPECTRO', imReadyShowDial: 'Listo — Mostrar el dial',
+    guessingNow: 'ADIVINANDO', dragNeedle: 'Arrastra la aguja hasta tu respuesta', lockInGuess: 'Confirmar respuesta',
+    revealBadge: 'REVELAR', clueBy: 'Pista de',
+    guessesTitle: 'Respuestas', scoresTitle: 'Puntuación', bestBadge: '★ MEJOR',
+    guessShort: 'Resp.', targetShort: 'Obj.', offByShort: 'Dif.',
+    playAgain: 'Jugar de nuevo', clueGiverNote: 'Dador de pistas',
+  },
+
+  pt: {
+    tagline: 'Você consegue ler mentes?',
+    play: 'Jogar', howToPlay: 'Como jogar',
+    footerMeta: '2–8 jogadores · Passando o celular · Sem cadastro',
+    gameSetup: 'Configuração', players: 'Jogadores', playerNames: 'Nomes',
+    playerPlaceholder: n => `Jogador ${n}`,
+    topicsCount: (sel, total) => `Temas (${sel}/${total})`,
+    all: 'Todos', addTopic: '+ Adicionar', startGame: 'Começar',
+    addTopicModalTitle: 'Adicionar Tema',
+    leftPlaceholder: 'Lado esquerdo (ex: Quente)', rightPlaceholder: 'Lado direito (ex: Frio)',
+    cancel: 'Cancelar', add: 'Adicionar',
+    howToPlayTitle: 'Como jogar', gotItBack: 'Entendi — Voltar ao menu',
+    scoringTitle: 'Pontuação', scoringSubtitle: 'Distância entre seu palpite e o alvo:',
+    tipsTitle: 'Dicas',
+    steps: [
+      { icon: '🎯', title: 'Alvo secreto', desc: 'Um jogador é o Dador de dicas. Ele vê uma posição oculta no dial de espectro.' },
+      { icon: '💡', title: 'Dê uma dica', desc: 'O Dador de dicas diz UMA palavra ou frase que indica onde o alvo está no espectro.' },
+      { icon: '📱', title: 'Passe o celular', desc: 'Os outros adivinham. Arraste a agulha para onde você acha que o alvo está.' },
+      { icon: '✨', title: 'Revelar e pontuar', desc: 'O alvo é revelado. Ganhe pontos conforme o quão perto você estava.' },
+    ],
+    tips: [
+      'O Dador de dicas não pode dizer as palavras da categoria.',
+      'Apenas uma dica — sem explicações adicionais.',
+      'O mesmo celular é passado entre os jogadores.',
+      'O Dador de dicas muda a cada rodada.',
+    ],
+    scoreRows: sr('0 – 5','6 – 10','11 – 20','21 – 30','> 30','Bullseye!','Perto','Próximo','Longe','Errou'),
+    psychicBadge: 'PSÍQUICO DESTA RODADA', passPhoneTo: 'Passe o celular para',
+    onlyLooks: name => `Apenas ${name} olha para a tela. Você verá a posição secreta e dará UMA dica.`,
+    imReadyShowTarget: 'Pronto — Mostrar meu alvo',
+    clueGiverLabel: 'DADOR DE DICAS', theSpectrum: 'O ESPECTRO',
+    lookAtNeedle: 'Veja a posição da agulha no dial acima e dê uma dica verbal para os outros jogadores.',
+    clueGivenPassPhone: 'Dica dada — Passe o celular',
+    guesserOf: (t, total) => `Chutador ${t} de ${total}`,
+    passTo: 'Passe para', everyoneLookAway: 'Todos os outros olhem para o outro lado 👀',
+    spectrumLabel: 'ESPECTRO', imReadyShowDial: 'Pronto — Mostrar o dial',
+    guessingNow: 'CHUTANDO', dragNeedle: 'Arraste a agulha para o seu palpite', lockInGuess: 'Confirmar palpite',
+    revealBadge: 'REVELAR', clueBy: 'Dica de',
+    guessesTitle: 'Palpites', scoresTitle: 'Pontuação', bestBadge: '★ MELHOR',
+    guessShort: 'Palpite', targetShort: 'Alvo', offByShort: 'Dif.',
+    playAgain: 'Jogar novamente', clueGiverNote: 'Dador de dicas',
+  },
+
+  de: {
+    tagline: 'Kannst du Gedanken lesen?',
+    play: 'Spielen', howToPlay: 'Anleitung',
+    footerMeta: '2–8 Spieler · Handy weitergeben · Kein Account nötig',
+    gameSetup: 'Spieleinstellung', players: 'Spieler', playerNames: 'Namen',
+    playerPlaceholder: n => `Spieler ${n}`,
+    topicsCount: (sel, total) => `Themen (${sel}/${total})`,
+    all: 'Alle', addTopic: '+ Hinzufügen', startGame: 'Spiel starten',
+    addTopicModalTitle: 'Thema hinzufügen',
+    leftPlaceholder: 'Linke Seite (z.B. Heiß)', rightPlaceholder: 'Rechte Seite (z.B. Kalt)',
+    cancel: 'Abbrechen', add: 'Hinzufügen',
+    howToPlayTitle: 'Anleitung', gotItBack: 'Verstanden — Zurück zum Menü',
+    scoringTitle: 'Punkte', scoringSubtitle: 'Abstand zwischen deiner Antwort und dem Ziel:',
+    tipsTitle: 'Tipps',
+    steps: [
+      { icon: '🎯', title: 'Geheimes Ziel', desc: 'Ein Spieler ist der Tipp-Geber. Er sieht eine versteckte Zielposition auf dem Spektrum-Zifferblatt.' },
+      { icon: '💡', title: 'Tipp geben', desc: 'Der Tipp-Geber sagt EIN Wort oder eine Phrase, die andeutet, wo das Ziel liegt.' },
+      { icon: '📱', title: 'Handy weitergeben', desc: 'Alle anderen raten. Ziehe die Nadel dorthin, wo du das Ziel vermutest.' },
+      { icon: '✨', title: 'Aufdecken & Punkte', desc: 'Das Ziel wird enthüllt. Punkte basierend auf der Genauigkeit.' },
+    ],
+    tips: [
+      'Der Tipp-Geber darf die Kategorie-Wörter nicht sagen.',
+      'Nur ein Tipp — keine weiteren Hinweise.',
+      'Dasselbe Handy wird weitergegeben.',
+      'Der Tipp-Geber wechselt jede Runde.',
+    ],
+    scoreRows: sr('0 – 5','6 – 10','11 – 20','21 – 30','> 30','Volltreffer!','Nah','In der Nähe','Weit','Daneben'),
+    psychicBadge: 'HELLSEHER DIESE RUNDE', passPhoneTo: 'Handy weitergeben an',
+    onlyLooks: name => `Nur ${name} schaut auf den Bildschirm. Du siehst die geheime Zielposition und gibst EINEN Tipp.`,
+    imReadyShowTarget: 'Bereit — Ziel zeigen',
+    clueGiverLabel: 'TIPP-GEBER', theSpectrum: 'DAS SPEKTRUM',
+    lookAtNeedle: 'Schau auf die Nadelposition und gib den anderen Spielern einen verbalen Tipp.',
+    clueGivenPassPhone: 'Tipp gegeben — Handy weitergeben',
+    guesserOf: (t, total) => `Rater ${t} von ${total}`,
+    passTo: 'Weitergeben an', everyoneLookAway: 'Alle anderen wegsehen 👀',
+    spectrumLabel: 'SPEKTRUM', imReadyShowDial: 'Bereit — Zifferblatt zeigen',
+    guessingNow: 'RATEN', dragNeedle: 'Ziehe die Nadel zu deiner Antwort', lockInGuess: 'Antwort bestätigen',
+    revealBadge: 'AUFDECKEN', clueBy: 'Tipp von',
+    guessesTitle: 'Antworten', scoresTitle: 'Punkte', bestBadge: '★ BESTER',
+    guessShort: 'Antw.', targetShort: 'Ziel', offByShort: 'Abw.',
+    playAgain: 'Nochmal spielen', clueGiverNote: 'Tipp-Geber',
+  },
+
+  fr: {
+    tagline: 'Peux-tu lire dans les pensées ?',
+    play: 'Jouer', howToPlay: 'Comment jouer',
+    footerMeta: '2–8 joueurs · Se passer le téléphone · Sans compte',
+    gameSetup: 'Configuration', players: 'Joueurs', playerNames: 'Prénoms',
+    playerPlaceholder: n => `Joueur ${n}`,
+    topicsCount: (sel, total) => `Sujets (${sel}/${total})`,
+    all: 'Tous', addTopic: '+ Ajouter', startGame: 'Commencer',
+    addTopicModalTitle: 'Ajouter un sujet',
+    leftPlaceholder: 'Côté gauche (ex : Chaud)', rightPlaceholder: 'Côté droit (ex : Froid)',
+    cancel: 'Annuler', add: 'Ajouter',
+    howToPlayTitle: 'Comment jouer', gotItBack: 'Compris — Retour au menu',
+    scoringTitle: 'Points', scoringSubtitle: 'Distance entre ta réponse et la cible :',
+    tipsTitle: 'Conseils',
+    steps: [
+      { icon: '🎯', title: 'Cible secrète', desc: "Un joueur est le Donneur d'indices. Il voit une position cachée sur le cadran de spectre." },
+      { icon: '💡', title: 'Donner un indice', desc: "Le Donneur d'indices dit UN mot ou phrase qui indique où se trouve la cible." },
+      { icon: '📱', title: 'Passer le téléphone', desc: "Tous les autres devinent. Faites glisser l'aiguille vers l'endroit où vous pensez que la cible est." },
+      { icon: '✨', title: 'Révéler et marquer', desc: 'La cible est révélée. Les points sont attribués selon la précision.' },
+    ],
+    tips: [
+      "Le Donneur d'indices ne peut pas dire les mots de la catégorie.",
+      'Un seul indice — pas de précisions supplémentaires.',
+      'Le même téléphone est passé entre les joueurs.',
+      "Le Donneur d'indices tourne à chaque manche.",
+    ],
+    scoreRows: sr('0 – 5','6 – 10','11 – 20','21 – 30','> 30','Bullseye !','Proche','Assez proche','Loin','Raté'),
+    psychicBadge: 'MÉDIUM CE TOUR', passPhoneTo: 'Passe le téléphone à',
+    onlyLooks: name => `Seul(e) ${name} regarde l'écran. Tu verras la position secrète et donneras UN indice.`,
+    imReadyShowTarget: 'Prêt(e) — Montrer ma cible',
+    clueGiverLabel: "DONNEUR D'INDICES", theSpectrum: 'LE SPECTRE',
+    lookAtNeedle: "Regarde la position de l'aiguille sur le cadran et donne un indice verbal aux autres joueurs.",
+    clueGivenPassPhone: 'Indice donné — Passe le téléphone',
+    guesserOf: (t, total) => `Devineur ${t} sur ${total}`,
+    passTo: 'Passer à', everyoneLookAway: 'Tous les autres regardent ailleurs 👀',
+    spectrumLabel: 'SPECTRE', imReadyShowDial: 'Prêt(e) — Montrer le cadran',
+    guessingNow: 'EN TRAIN DE DEVINER', dragNeedle: "Faites glisser l'aiguille vers votre réponse", lockInGuess: 'Confirmer la réponse',
+    revealBadge: 'RÉVÉLER', clueBy: 'Indice de',
+    guessesTitle: 'Réponses', scoresTitle: 'Scores', bestBadge: '★ MEILLEUR',
+    guessShort: 'Rép.', targetShort: 'Cible', offByShort: 'Écart',
+    playAgain: 'Rejouer', clueGiverNote: "Donneur d'indices",
+  },
+
+  it: {
+    tagline: 'Riesci a leggere nel pensiero?',
+    play: 'Gioca', howToPlay: 'Come si gioca',
+    footerMeta: '2–8 giocatori · Passa il telefono · Senza account',
+    gameSetup: 'Impostazioni', players: 'Giocatori', playerNames: 'Nomi',
+    playerPlaceholder: n => `Giocatore ${n}`,
+    topicsCount: (sel, total) => `Argomenti (${sel}/${total})`,
+    all: 'Tutti', addTopic: '+ Aggiungi', startGame: 'Inizia',
+    addTopicModalTitle: 'Aggiungi argomento',
+    leftPlaceholder: 'Lato sinistro (es. Caldo)', rightPlaceholder: 'Lato destro (es. Freddo)',
+    cancel: 'Annulla', add: 'Aggiungi',
+    howToPlayTitle: 'Come si gioca', gotItBack: 'Capito — Torna al menu',
+    scoringTitle: 'Punteggio', scoringSubtitle: 'Distanza tra la tua risposta e il bersaglio:',
+    tipsTitle: 'Suggerimenti',
+    steps: [
+      { icon: '🎯', title: 'Bersaglio segreto', desc: 'Un giocatore è il Datore di indizi. Vede una posizione nascosta sul quadrante dello spettro.' },
+      { icon: '💡', title: 'Dai un indizio', desc: "Il Datore di indizi dice UNA parola o frase che suggerisce dove si trova il bersaglio." },
+      { icon: '📱', title: 'Passa il telefono', desc: "Gli altri indovinano. Trascina l'ago verso il punto in cui pensi si trovi il bersaglio." },
+      { icon: '✨', title: 'Rivela e punteggio', desc: 'Il bersaglio viene rivelato. I punti sono assegnati in base alla precisione.' },
+    ],
+    tips: [
+      'Il Datore di indizi non può dire le parole della categoria.',
+      'Un solo indizio — nessun suggerimento aggiuntivo.',
+      'Lo stesso telefono viene passato tra i giocatori.',
+      'Il Datore di indizi ruota ogni turno.',
+    ],
+    scoreRows: sr('0 – 5','6 – 10','11 – 20','21 – 30','> 30','Bullseye!','Vicino','Abbastanza vicino','Lontano','Mancato'),
+    psychicBadge: 'MEDIUM DI QUESTO TURNO', passPhoneTo: 'Passa il telefono a',
+    onlyLooks: name => `Solo ${name} guarda lo schermo. Vedrai la posizione segreta e darai UN indizio.`,
+    imReadyShowTarget: 'Pronto — Mostra il mio bersaglio',
+    clueGiverLabel: 'DATORE DI INDIZI', theSpectrum: 'LO SPETTRO',
+    lookAtNeedle: "Guarda la posizione dell'ago sul quadrante e dai un indizio verbale agli altri giocatori.",
+    clueGivenPassPhone: 'Indizio dato — Passa il telefono',
+    guesserOf: (t, total) => `Indovinatore ${t} di ${total}`,
+    passTo: 'Passa a', everyoneLookAway: 'Tutti gli altri guardino altrove 👀',
+    spectrumLabel: 'SPETTRO', imReadyShowDial: 'Pronto — Mostra il quadrante',
+    guessingNow: 'STA INDOVINANDO', dragNeedle: "Trascina l'ago verso la tua risposta", lockInGuess: 'Conferma risposta',
+    revealBadge: 'RIVELA', clueBy: 'Indizio di',
+    guessesTitle: 'Risposte', scoresTitle: 'Punteggi', bestBadge: '★ MIGLIORE',
+    guessShort: 'Risp.', targetShort: 'Bers.', offByShort: 'Diff.',
+    playAgain: 'Gioca ancora', clueGiverNote: 'Datore di indizi',
+  },
+
+  ja: {
+    tagline: '心が読める？',
+    play: 'プレイ', howToPlay: '遊び方',
+    footerMeta: '2〜8人 · スマホを渡す · アカウント不要',
+    gameSetup: 'ゲーム設定', players: 'プレイヤー', playerNames: 'プレイヤー名',
+    playerPlaceholder: n => `プレイヤー ${n}`,
+    topicsCount: (sel, total) => `トピック (${sel}/${total})`,
+    all: 'すべて', addTopic: '+ 追加', startGame: 'ゲーム開始',
+    addTopicModalTitle: 'トピックを追加',
+    leftPlaceholder: '左側（例：熱い）', rightPlaceholder: '右側（例：冷たい）',
+    cancel: 'キャンセル', add: '追加',
+    howToPlayTitle: '遊び方', gotItBack: 'わかった — メニューへ戻る',
+    scoringTitle: '点数', scoringSubtitle: 'あなたの回答とターゲットの距離：',
+    tipsTitle: 'ヒント',
+    steps: [
+      { icon: '🎯', title: '秘密のターゲット', desc: '1人がクルーギバーになります。スペクトラムダイヤルの隠れたターゲット位置を見ます。' },
+      { icon: '💡', title: 'クルーを言う', desc: 'クルーギバーはターゲットがどこにあるかを示す、1つの言葉を言います。' },
+      { icon: '📱', title: 'スマホを渡す', desc: '他の全員が推測します。ターゲットがあると思う場所に針をドラッグしてください。' },
+      { icon: '✨', title: '公開と得点', desc: 'ターゲットが公開されます。推測の精度に基づいてポイントを獲得します。' },
+    ],
+    tips: [
+      'クルーギバーはカテゴリーの言葉を言えません。',
+      'クルーは1つだけ — 追加のヒントはNGです。',
+      '同じスマホをプレイヤー間で渡します。',
+      'クルーギバーは毎ラウンド変わります。',
+    ],
+    scoreRows: sr('0 – 5','6 – 10','11 – 20','21 – 30','> 30','ど真ん中！','近い','そこそこ','遠い','ミス'),
+    psychicBadge: 'このラウンドの予言者', passPhoneTo: 'スマホを渡す相手',
+    onlyLooks: name => `${name}だけが画面を見てください。秘密のターゲット位置を見て、1つのクルーを言います。`,
+    imReadyShowTarget: '準備完了 — ターゲットを見る',
+    clueGiverLabel: 'クルーギバー', theSpectrum: 'スペクトラム',
+    lookAtNeedle: '上のダイヤルの針の位置を見て、他のプレイヤーに言葉でヒントを伝えてください。',
+    clueGivenPassPhone: 'クルーを言った — スマホを渡す',
+    guesserOf: (t, total) => `推測者 ${t}/${total}`,
+    passTo: '渡す相手：', everyoneLookAway: '他の人は見ないで 👀',
+    spectrumLabel: 'スペクトラム', imReadyShowDial: '準備完了 — ダイヤルを見る',
+    guessingNow: '推測中', dragNeedle: '針をドラッグして答えを選ぼう', lockInGuess: '答えを確定',
+    revealBadge: '公開', clueBy: 'クルー：',
+    guessesTitle: '推測結果', scoresTitle: 'スコア', bestBadge: '★ ベスト',
+    guessShort: '推測', targetShort: 'ターゲット', offByShort: 'ズレ',
+    playAgain: 'もう一度', clueGiverNote: 'クルーギバー',
+  },
+
+  ko: {
+    tagline: '마음을 읽을 수 있나요?',
+    play: '플레이', howToPlay: '게임 방법',
+    footerMeta: '2~8명 · 폰 돌리기 · 회원가입 불필요',
+    gameSetup: '게임 설정', players: '플레이어', playerNames: '이름',
+    playerPlaceholder: n => `플레이어 ${n}`,
+    topicsCount: (sel, total) => `주제 (${sel}/${total})`,
+    all: '전체', addTopic: '+ 추가', startGame: '게임 시작',
+    addTopicModalTitle: '주제 추가',
+    leftPlaceholder: '왼쪽 (예: 뜨거운)', rightPlaceholder: '오른쪽 (예: 차가운)',
+    cancel: '취소', add: '추가',
+    howToPlayTitle: '게임 방법', gotItBack: '알겠어요 — 메뉴로 돌아가기',
+    scoringTitle: '점수', scoringSubtitle: '추측과 타겟 사이의 거리:',
+    tipsTitle: '팁',
+    steps: [
+      { icon: '🎯', title: '비밀 타겟', desc: '한 플레이어가 힌트 제공자가 됩니다. 스펙트럼 다이얼의 숨겨진 타겟 위치를 봅니다.' },
+      { icon: '💡', title: '힌트 주기', desc: '힌트 제공자는 타겟이 어디 있는지를 나타내는 단어나 구문을 하나 말합니다.' },
+      { icon: '📱', title: '폰 넘기기', desc: '나머지가 추측합니다. 다이얼의 바늘을 타겟이 있다고 생각하는 곳으로 드래그하세요.' },
+      { icon: '✨', title: '공개 및 점수', desc: '타겟이 공개됩니다. 추측이 얼마나 가까웠는지에 따라 점수를 받습니다.' },
+    ],
+    tips: [
+      '힌트 제공자는 카테고리 단어를 말할 수 없습니다.',
+      '힌트는 하나만 — 추가 설명은 안 됩니다.',
+      '같은 폰이 플레이어 사이에서 돌아갑니다.',
+      '힌트 제공자는 매 라운드 바뀝니다.',
+    ],
+    scoreRows: sr('0 – 5','6 – 10','11 – 20','21 – 30','> 30','정확히!','가까움','근처','멀리','빗나감'),
+    psychicBadge: '이번 라운드 독심술사', passPhoneTo: '폰을 넘겨주세요',
+    onlyLooks: name => `${name}만 화면을 봐야 합니다. 비밀 타겟 위치를 보고 힌트를 하나 말합니다.`,
+    imReadyShowTarget: '준비됐어요 — 타겟 보기',
+    clueGiverLabel: '힌트 제공자', theSpectrum: '스펙트럼',
+    lookAtNeedle: '위의 다이얼에서 바늘 위치를 보고, 다른 플레이어들에게 말로 힌트를 주세요.',
+    clueGivenPassPhone: '힌트 줬어요 — 폰 넘기기',
+    guesserOf: (t, total) => `추측자 ${t}/${total}`,
+    passTo: '넘길 대상:', everyoneLookAway: '다른 사람들은 보지 마세요 👀',
+    spectrumLabel: '스펙트럼', imReadyShowDial: '준비됐어요 — 다이얼 보기',
+    guessingNow: '추측 중', dragNeedle: '바늘을 드래그해서 답을 선택하세요', lockInGuess: '정답 확정',
+    revealBadge: '공개', clueBy: '힌트:',
+    guessesTitle: '추측 결과', scoresTitle: '점수', bestBadge: '★ 베스트',
+    guessShort: '추측', targetShort: '타겟', offByShort: '오차',
+    playAgain: '다시 하기', clueGiverNote: '힌트 제공자',
+  },
+}

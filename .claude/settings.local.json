@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Alen/OneDrive/Desktop/m-project//**)",
+      "Read(//c/Users/Alen/OneDrive/Desktop/m-project/**)",
+      "Bash(npm create:*)",
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:flagicons.lipis.dev)",
+      "Bash(curl -s \"https://flagicons.lipis.dev/flags/4x3/es.svg\" -o \"c:/Users/Alen/OneDrive/Desktop/m-project/wavelength/src/assets/flags/es.svg\")",
+      "Bash(curl -sk \"https://flagicons.lipis.dev/flags/4x3/es.svg\" -o \"c:/Users/Alen/OneDrive/Desktop/m-project/wavelength/src/assets/flags/es.svg\")"
+    ]
+  }
+}
