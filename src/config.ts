@@ -63,7 +63,7 @@ export const CONFIG = {
 
   // ── Game rules ───────────────────────────────
   game: {
-    defaultMaxRounds:    1,
+    defaultMaxRounds:    3,
     defaultPlayerCount:  2,
     minPlayers:          2,
     maxPlayers:          8,

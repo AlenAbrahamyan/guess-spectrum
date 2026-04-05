@@ -18,7 +18,10 @@ export function RoleSelectionScreen() {
       <div style={topGlow} />
 
       <div style={content}>
-        <div style={badge}>{t.psychicBadge}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={badge}>{t.psychicBadge}</div>
+          <div style={roundBadge}>{t.roundOf(state.currentRound + 1, state.maxRounds)}</div>
+        </div>
 
         <div style={avatarRing}>
           <div style={avatar}>{initial}</div>
@@ -55,6 +58,11 @@ const topGlow: React.CSSProperties = {
 const content: React.CSSProperties = {
   flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
   justifyContent: 'center', gap: 22,
+}
+const roundBadge: React.CSSProperties = {
+  fontSize: 11, fontWeight: 800, letterSpacing: '0.15em', color: '#6666aa',
+  textTransform: 'uppercase', border: '1px solid rgba(100,100,170,0.3)',
+  borderRadius: 20, padding: '5px 14px', background: 'rgba(80,80,170,0.08)',
 }
 const badge: React.CSSProperties = {
   fontSize: 11, fontWeight: 800, letterSpacing: '0.18em', color: '#6666ff',

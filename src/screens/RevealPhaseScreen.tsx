@@ -11,8 +11,9 @@ export function RevealPhaseScreen() {
   useScreenTransition(ref)
   const t = useT()
 
-  const round     = state.rounds[state.currentRound]
-  const clueGiver = state.players[state.clueGiverIndex]
+  const round      = state.rounds[state.currentRound]
+  const clueGiver  = state.players[state.clueGiverIndex]
+  const isLastRound = state.currentRound + 1 >= state.maxRounds
 
   const results = state.guesserQueue.map((id, colorIndex) => {
     const player = state.players.find(p => p.id === id)!
@@ -26,7 +27,10 @@ export function RevealPhaseScreen() {
   return (
     <div ref={ref} style={screen}>
       <div style={header}>
-        <div style={headerBadge}>{t.revealBadge}</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 6 }}>
+          <div style={headerBadge}>{t.revealBadge}</div>
+          <div style={roundPill}>{t.roundOf(state.currentRound + 1, state.maxRounds)}</div>
+        </div>
         <div style={spectrumLine}>
           <span style={{ color: '#44aaff', fontWeight: 800 }}>{round.category.left}</span>
           <span style={{ color: '#444466' }}> ↔ </span>
@@ -82,8 +86,8 @@ export function RevealPhaseScreen() {
         ))}
       </div>
 
-      <Button fullWidth onClick={() => dispatch({ type: 'PLAY_AGAIN' })}>
-        {t.playAgain}
+      <Button fullWidth onClick={() => dispatch({ type: 'NEXT_ROUND' })}>
+        {isLastRound ? t.finalScores : t.nextRound}
       </Button>
     </div>
   )
@@ -101,6 +105,11 @@ const headerBadge: React.CSSProperties = {
 }
 const spectrumLine: React.CSSProperties = { fontSize: 18, marginBottom: 4 }
 const clueGiverNote: React.CSSProperties = { fontSize: 12, color: '#555577' }
+const roundPill: React.CSSProperties = {
+  display: 'inline-block', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em',
+  color: '#6666aa', border: '1px solid rgba(100,100,170,0.35)', background: 'rgba(80,80,170,0.1)',
+  borderRadius: 20, padding: '3px 10px',
+}
 const card: React.CSSProperties = {
   background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
   borderRadius: 18, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8,

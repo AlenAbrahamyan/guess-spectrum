@@ -29,9 +29,7 @@ export function CluePhaseScreen() {
         <div style={spectrumRow}>
           <div style={conceptLeft}>{category.left}</div>
           <div style={arrowCol}>
-            {/* <div style={specLine} /> */}
             <span style={arrowIcon}>↔</span>
-            {/* <div style={specLine} /> */}
           </div>
           <div style={conceptRight}>{category.right}</div>
         </div>
@@ -41,10 +39,7 @@ export function CluePhaseScreen() {
 
       <div style={{ flex: 1 }} />
 
-      <Button
-        fullWidth
-        onClick={() => dispatch({ type: "SET_CLUE", clue: "" })}
-      >
+      <Button fullWidth onClick={() => dispatch({ type: "SET_CLUE", clue: "" })}>
         {t.clueGivenPassPhone}
       </Button>
     </div>
@@ -133,12 +128,6 @@ const arrowCol: React.CSSProperties = {
   alignItems: "center",
   gap: 4,
   flexShrink: 0,
-};
-const specLine: React.CSSProperties = {
-  width: 16,
-  height: 2,
-  background: "rgba(255,255,255,0.15)",
-  borderRadius: 1,
 };
 const arrowIcon: React.CSSProperties = {
   fontSize: 20,

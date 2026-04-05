@@ -45,7 +45,7 @@ export function createInitialState(): GameState {
     currentRound: 0,
     clueGiverIndex: 0,
     currentGuess: 50,
-    maxRounds: CONFIG.game.defaultMaxRounds,
+    maxRounds: CONFIG.game.defaultPlayerCount,
     selectedCategories: Array.from({ length: totalCount }, (_, i) => i),
     customCategories,
     language: loadLanguage(),

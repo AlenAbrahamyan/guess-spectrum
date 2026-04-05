@@ -71,7 +71,7 @@ export function LobbyScreen() {
           }}
         >
           <button
-            style={counterBtn}
+            style={playerCountBtn}
             onClick={() => changeCount(-1)}
             disabled={count <= 2}
           >
@@ -89,12 +89,32 @@ export function LobbyScreen() {
             {count}
           </span>
           <button
-            style={counterBtn}
+            style={playerCountBtn}
             onClick={() => changeCount(1)}
             disabled={count >= 8}
           >
             +
           </button>
+        </div>
+      </div>
+
+      {/* Rounds */}
+      <div style={card}>
+        <div style={label}>{t.rounds}</div>
+        <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap" }}>
+          {[1, 2, 3].map((times) => {
+            const rounds = Math.min(10, times * count);
+            const active = state.maxRounds === rounds;
+            return (
+              <button
+                key={times}
+                style={roundPreset(active)}
+                onClick={() => dispatch({ type: "SET_MAX_ROUNDS", count: rounds })}
+              >
+                ×{times} <span style={{ opacity: 0.6, fontSize: 11 }}>({rounds})</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -303,7 +323,20 @@ const label: React.CSSProperties = {
   color: "#7070aa",
   textTransform: "uppercase",
 };
-const counterBtn: React.CSSProperties = {
+function roundPreset(active: boolean): React.CSSProperties {
+  return {
+    padding: "5px 14px",
+    borderRadius: 20,
+    border: active ? "1px solid rgba(74,74,255,0.7)" : "1px solid rgba(255,255,255,0.1)",
+    background: active ? "rgba(74,74,255,0.22)" : "rgba(255,255,255,0.05)",
+    color: active ? "#a0a0ff" : "#666688",
+    fontSize: 13,
+    fontWeight: 700,
+    fontFamily: "inherit",
+    cursor: "pointer",
+  };
+}
+const playerCountBtn: React.CSSProperties = {
   width: 44,
   height: 44,
   borderRadius: 12,

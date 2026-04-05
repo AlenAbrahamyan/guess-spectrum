@@ -76,6 +76,11 @@ export function gameReducer(state: GameState, action: Action): GameState {
       return { ...state, customCategories, selectedCategories }
     }
 
+    case 'SET_MAX_ROUNDS': {
+      const count = Math.max(1, Math.min(10, action.count))
+      return { ...state, maxRounds: count }
+    }
+
     case 'SET_PLAYER_COUNT': {
       const count = Math.max(2, Math.min(8, action.count))
       const current = state.players.length
@@ -85,7 +90,12 @@ export function gameReducer(state: GameState, action: Action): GameState {
       } else {
         players = players.slice(0, count)
       }
-      return { ...state, players }
+      // Scale rounds if currently at a clean multiple (×1, ×2, ×3) of player count
+      const ratio = state.maxRounds / current
+      const maxRounds = Number.isInteger(ratio) && ratio >= 1 && ratio <= 3
+        ? Math.min(10, ratio * count)
+        : state.maxRounds
+      return { ...state, players, maxRounds }
     }
 
     case 'SET_PLAYER_NAME':

@@ -20,7 +20,7 @@ export type T = {
   // Main menu
   tagline: string; play: string; howToPlay: string; footerMeta: string
   // Lobby
-  gameSetup: string; players: string; playerNames: string
+  gameSetup: string; players: string; playerNames: string; rounds: string
   playerPlaceholder: (n: number) => string
   topicsCount: (sel: number, total: number) => string
   all: string; addTopic: string; startGame: string
@@ -34,19 +34,25 @@ export type T = {
   psychicBadge: string; passPhoneTo: string
   onlyLooks: (name: string) => string
   imReadyShowTarget: string
+  roundOf: (current: number, total: number) => string
   // Clue phase
   clueGiverLabel: string; theSpectrum: string
   lookAtNeedle: string; clueGivenPassPhone: string
+  enterCluePlaceholder: string; clueLabel: string
   // Guess passing
   guesserOf: (turn: number, total: number) => string
   passTo: string; everyoneLookAway: string; spectrumLabel: string; imReadyShowDial: string
+  clueWas: string
   // Guess phase
   guessingNow: string; dragNeedle: string; lockInGuess: string
   // Reveal
   revealBadge: string; clueBy: string
   guessesTitle: string; scoresTitle: string; bestBadge: string
   guessShort: string; targetShort: string; offByShort: string
-  playAgain: string; clueGiverNote: string
+  nextRound: string; playAgain: string; clueGiverNote: string
+  // Scoreboard
+  finalScores: string; winsWith: (pts: number) => string
+  finalStandings: string; pointsShort: string
 }
 
 function sr(
@@ -103,7 +109,17 @@ export const TRANSLATIONS: Record<Lang, T> = {
     revealBadge: 'REVEAL', clueBy: 'Clue by',
     guessesTitle: 'Guesses', scoresTitle: 'Scores', bestBadge: '★ BEST',
     guessShort: 'Guess', targetShort: 'Target', offByShort: 'Off by',
+    rounds: 'Rounds',
+    roundOf: (c, t) => `Round ${c} of ${t}`,
+    enterCluePlaceholder: 'Type your clue…',
+    clueLabel: 'CLUE',
+    clueWas: 'The clue was',
+    nextRound: 'Next Round',
     playAgain: 'Play Again', clueGiverNote: 'Clue Giver',
+    finalScores: 'Final Scores',
+    winsWith: pts => `with ${pts} points`,
+    finalStandings: 'Final Standings',
+    pointsShort: 'pts',
   },
 
   es: {
@@ -146,7 +162,17 @@ export const TRANSLATIONS: Record<Lang, T> = {
     revealBadge: 'REVELAR', clueBy: 'Pista de',
     guessesTitle: 'Respuestas', scoresTitle: 'Puntuación', bestBadge: '★ MEJOR',
     guessShort: 'Resp.', targetShort: 'Obj.', offByShort: 'Dif.',
+    rounds: 'Rondas',
+    roundOf: (c, t) => `Ronda ${c} de ${t}`,
+    enterCluePlaceholder: 'Escribe tu pista…',
+    clueLabel: 'PISTA',
+    clueWas: 'La pista fue',
+    nextRound: 'Siguiente ronda',
     playAgain: 'Jugar de nuevo', clueGiverNote: 'Dador de pistas',
+    finalScores: 'Puntuación final',
+    winsWith: pts => `con ${pts} puntos`,
+    finalStandings: 'Clasificación final',
+    pointsShort: 'pts',
   },
 
   pt: {
@@ -189,7 +215,17 @@ export const TRANSLATIONS: Record<Lang, T> = {
     revealBadge: 'REVELAR', clueBy: 'Dica de',
     guessesTitle: 'Palpites', scoresTitle: 'Pontuação', bestBadge: '★ MELHOR',
     guessShort: 'Palpite', targetShort: 'Alvo', offByShort: 'Dif.',
+    rounds: 'Rodadas',
+    roundOf: (c, t) => `Rodada ${c} de ${t}`,
+    enterCluePlaceholder: 'Digite sua dica…',
+    clueLabel: 'DICA',
+    clueWas: 'A dica foi',
+    nextRound: 'Próxima rodada',
     playAgain: 'Jogar novamente', clueGiverNote: 'Dador de dicas',
+    finalScores: 'Pontuação final',
+    winsWith: pts => `com ${pts} pontos`,
+    finalStandings: 'Classificação final',
+    pointsShort: 'pts',
   },
 
   de: {
@@ -232,7 +268,17 @@ export const TRANSLATIONS: Record<Lang, T> = {
     revealBadge: 'AUFDECKEN', clueBy: 'Tipp von',
     guessesTitle: 'Antworten', scoresTitle: 'Punkte', bestBadge: '★ BESTER',
     guessShort: 'Antw.', targetShort: 'Ziel', offByShort: 'Abw.',
+    rounds: 'Runden',
+    roundOf: (c, t) => `Runde ${c} von ${t}`,
+    enterCluePlaceholder: 'Tipp eingeben…',
+    clueLabel: 'TIPP',
+    clueWas: 'Der Tipp war',
+    nextRound: 'Nächste Runde',
     playAgain: 'Nochmal spielen', clueGiverNote: 'Tipp-Geber',
+    finalScores: 'Endergebnis',
+    winsWith: pts => `mit ${pts} Punkten`,
+    finalStandings: 'Endstand',
+    pointsShort: 'Pkt',
   },
 
   fr: {
@@ -275,7 +321,17 @@ export const TRANSLATIONS: Record<Lang, T> = {
     revealBadge: 'RÉVÉLER', clueBy: 'Indice de',
     guessesTitle: 'Réponses', scoresTitle: 'Scores', bestBadge: '★ MEILLEUR',
     guessShort: 'Rép.', targetShort: 'Cible', offByShort: 'Écart',
+    rounds: 'Manches',
+    roundOf: (c, t) => `Manche ${c} sur ${t}`,
+    enterCluePlaceholder: 'Tape ton indice…',
+    clueLabel: 'INDICE',
+    clueWas: "L'indice était",
+    nextRound: 'Manche suivante',
     playAgain: 'Rejouer', clueGiverNote: "Donneur d'indices",
+    finalScores: 'Scores finaux',
+    winsWith: pts => `avec ${pts} points`,
+    finalStandings: 'Classement final',
+    pointsShort: 'pts',
   },
 
   it: {
@@ -318,7 +374,17 @@ export const TRANSLATIONS: Record<Lang, T> = {
     revealBadge: 'RIVELA', clueBy: 'Indizio di',
     guessesTitle: 'Risposte', scoresTitle: 'Punteggi', bestBadge: '★ MIGLIORE',
     guessShort: 'Risp.', targetShort: 'Bers.', offByShort: 'Diff.',
+    rounds: 'Round',
+    roundOf: (c, t) => `Round ${c} di ${t}`,
+    enterCluePlaceholder: 'Scrivi il tuo indizio…',
+    clueLabel: 'INDIZIO',
+    clueWas: "L'indizio era",
+    nextRound: 'Prossimo round',
     playAgain: 'Gioca ancora', clueGiverNote: 'Datore di indizi',
+    finalScores: 'Punteggi finali',
+    winsWith: pts => `con ${pts} punti`,
+    finalStandings: 'Classifica finale',
+    pointsShort: 'pt',
   },
 
   ja: {
@@ -361,7 +427,17 @@ export const TRANSLATIONS: Record<Lang, T> = {
     revealBadge: '公開', clueBy: 'クルー：',
     guessesTitle: '推測結果', scoresTitle: 'スコア', bestBadge: '★ ベスト',
     guessShort: '推測', targetShort: 'ターゲット', offByShort: 'ズレ',
+    rounds: 'ラウンド',
+    roundOf: (c, t) => `ラウンド ${c}/${t}`,
+    enterCluePlaceholder: 'クルーを入力…',
+    clueLabel: 'クルー',
+    clueWas: 'クルーは',
+    nextRound: '次のラウンド',
     playAgain: 'もう一度', clueGiverNote: 'クルーギバー',
+    finalScores: '最終スコア',
+    winsWith: pts => `${pts}ポイントで勝利`,
+    finalStandings: '最終順位',
+    pointsShort: 'pt',
   },
 
   ko: {
@@ -404,6 +480,16 @@ export const TRANSLATIONS: Record<Lang, T> = {
     revealBadge: '공개', clueBy: '힌트:',
     guessesTitle: '추측 결과', scoresTitle: '점수', bestBadge: '★ 베스트',
     guessShort: '추측', targetShort: '타겟', offByShort: '오차',
+    rounds: '라운드',
+    roundOf: (c, t) => `라운드 ${c}/${t}`,
+    enterCluePlaceholder: '힌트를 입력하세요…',
+    clueLabel: '힌트',
+    clueWas: '힌트는',
+    nextRound: '다음 라운드',
     playAgain: '다시 하기', clueGiverNote: '힌트 제공자',
+    finalScores: '최종 점수',
+    winsWith: pts => `${pts}점으로 우승`,
+    finalStandings: '최종 순위',
+    pointsShort: 'pt',
   },
 }

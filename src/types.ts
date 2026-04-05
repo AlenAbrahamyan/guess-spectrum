@@ -63,6 +63,7 @@ export type Action =
   | { type: 'DELETE_CUSTOM_CATEGORY'; localIndex: number }
   | { type: 'SET_LANGUAGE'; language: import('./i18n/translations').Lang }
   | { type: 'SET_PLAYER_COUNT'; count: number }
+  | { type: 'SET_MAX_ROUNDS'; count: number }
   | { type: 'SET_PLAYER_NAME'; id: string; name: string }
   | { type: 'START_GAME' }
   | { type: 'CONFIRM_ROLE' }
