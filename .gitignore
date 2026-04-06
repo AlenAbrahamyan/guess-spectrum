@@ -20,6 +20,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Editor
+.claude/
 .vscode/
 .idea/
 *.suo
