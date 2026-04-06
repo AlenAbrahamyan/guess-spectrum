@@ -107,7 +107,6 @@ export function MainMenuScreen() {
           <img src="/main-menu-banner.webp" alt="Guess Spectrum" style={bannerImg} />
           <div style={bannerOverlay} />
         </div> */}
-
         <img
           src="/main-menu-banner.webp"
           alt="Guess Spectrum"
