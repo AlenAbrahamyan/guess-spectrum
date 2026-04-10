@@ -14,6 +14,7 @@ import frFlag from "../assets/flags/fr.svg";
 import itFlag from "../assets/flags/it.svg";
 import jaFlag from "../assets/flags/ja.svg";
 import koFlag from "../assets/flags/ko.svg";
+import ruFlag from "../assets/flags/ru.svg";
 
 const FLAG_URLS: Record<Lang, string> = {
   en: enFlag,
@@ -24,6 +25,7 @@ const FLAG_URLS: Record<Lang, string> = {
   it: itFlag,
   ja: jaFlag,
   ko: koFlag,
+  ru: ruFlag,
 };
 
 export function MainMenuScreen() {
